@@ -11,11 +11,6 @@ export function clearChatbotHistory() {
 }
 
 export async function askHealthChatbot(question) {
-  const hasKey = Boolean((import.meta.env.VITE_HF_API_KEY || '').trim())
-  if (!hasKey) {
-    return 'VITE_HF_API_KEY not configured. Add it to your .env and restart the app.'
-  }
-
   const context = history.length ? `\nRecent chat:\n${history.join('\n')}` : ''
 
   const prompt = `
