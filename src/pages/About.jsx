@@ -36,7 +36,7 @@ function About() {
           <Activity size={48} color="#1E40AF" />
         </div>
 
-        <h1 className="text-4xl font-bold">FitTrack</h1>
+        <h1 className="text-4xl font-bold">HealthHub</h1>
         <p className="text-white/90 text-lg mt-1">Your Personal Health Companion</p>
 
         <span className="inline-block mt-4 bg-white/20 px-4 py-1 rounded-full text-sm font-semibold">
@@ -75,7 +75,7 @@ function About() {
             <h2 className="text-xl font-semibold">About</h2>
           </div>
           <p className="text-gray-700 leading-relaxed">
-            FitTrack helps you reach fitness goals with intelligent tracking,
+            HealthHub helps you reach fitness goals with intelligent tracking,
             personalized insights, and a friendly community. We make wellness
             simple and actionable for everyone.
           </p>
@@ -107,7 +107,7 @@ function About() {
             Made with love for your health
           </p>
 
-          <p className="text-gray-500 mt-1">© 2025 FitTrack. All rights reserved.</p>
+          <p className="text-gray-500 mt-1">© 2025 HealthHub. All rights reserved.</p>
         </div>
 
       </div>

@@ -32,7 +32,7 @@ function Navbar({ user, logout }) {
         {/* Brand */}
         <Link to="/home" className="flex items-center gap-2 text-[var(--text)] font-bold text-xl">
           <span className="text-2xl">🏃</span>
-          <span>FitTrack</span>
+          <span>HealthHub</span>
         </Link>
 
         {/* Desktop Navigation */}
