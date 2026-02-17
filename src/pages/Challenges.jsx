@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Trophy, Plus, Users, Target, TrendingUp, Calendar } from 'lucide-react'
+import { Trophy, Plus, Users, Target, TrendingUp, Calendar, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
 
 function Challenges({ user }) {
@@ -66,6 +66,16 @@ function Challenges({ user }) {
       fetchChallenges()
     } catch (error) {
       alert(error.response?.data?.message || 'Failed to join challenge')
+    }
+  }
+
+  const handleDeleteChallenge = async (id) => {
+    if (!window.confirm('Delete this challenge permanently?')) return
+    try {
+      await axios.delete(`/challenges/${id}`)
+      fetchChallenges()
+    } catch (error) {
+      alert(error.response?.data?.message || 'Failed to delete challenge')
     }
   }
 
@@ -314,6 +324,15 @@ function Challenges({ user }) {
                 {challenge.isParticipant ? <TrendingUp size={18} /> : <Plus size={18} />}
                 {challenge.isParticipant ? 'View Details' : 'Join Challenge'}
               </button>
+              {view === 'my' && challenge.isCreator && (
+                <button
+                  onClick={() => handleDeleteChallenge(challenge._id)}
+                  className="w-full mt-2 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 flex items-center justify-center gap-2 transition"
+                >
+                  <Trash2 size={18} />
+                  Delete Challenge
+                </button>
+              )}
 
             </div>
           ))}

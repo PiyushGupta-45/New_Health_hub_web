@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Target, Plus, Trash2 } from 'lucide-react'
 import { format } from 'date-fns'
+import { getLatestApprovedPlan } from '../../services/weeklyWorkoutPlan'
 
 function PersonalizedGoals({ user }) {
   const [goals, setGoals] = useState([])
   const [showModal, setShowModal] = useState(false)
+  const [weeklyPlan, setWeeklyPlan] = useState(null)
+  const [planError, setPlanError] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     target: '',
@@ -18,7 +21,19 @@ function PersonalizedGoals({ user }) {
     if (savedGoals) {
       setGoals(JSON.parse(savedGoals))
     }
+
+    loadWeeklyPlan()
   }, [])
+
+  const loadWeeklyPlan = async () => {
+    const result = await getLatestApprovedPlan()
+    if (result.success) {
+      setWeeklyPlan(result.data)
+      setPlanError(result.localOnly ? 'Showing locally saved weekly plan.' : '')
+    } else {
+      setPlanError(result.error || 'Unable to load weekly plan')
+    }
+  }
 
   const saveGoals = (newGoals) => {
     setGoals(newGoals)
@@ -72,6 +87,23 @@ function PersonalizedGoals({ user }) {
           <Plus size={18} />
           Set Goal
         </button>
+      </div>
+
+      <div className="bg-white shadow rounded-lg p-5 mb-6">
+        <h2 className="text-lg font-semibold mb-2">Weekly Workout Plan</h2>
+        {!weeklyPlan ? (
+          <p className="text-sm text-gray-500">No approved plan yet. Generate one in Workout AI.</p>
+        ) : (
+          <>
+            <p className="text-sm text-gray-600 mb-2">
+              Goal: <span className="font-medium">{weeklyPlan.goal}</span>
+            </p>
+            <p className="text-sm text-gray-700 whitespace-pre-line">
+              {weeklyPlan.planText.split('\n').filter(Boolean).slice(0, 6).join('\n')}
+            </p>
+          </>
+        )}
+        {planError ? <p className="text-xs text-orange-600 mt-2">{planError}</p> : null}
       </div>
 
       {/* No Goals State */}

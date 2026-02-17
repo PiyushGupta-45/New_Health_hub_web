@@ -7,7 +7,8 @@ import {
   Hash,
   X,
   Send,
-  LogOut
+  LogOut,
+  Trash2
 } from 'lucide-react'
 import { format } from 'date-fns'
 
@@ -112,6 +113,20 @@ function Community({ user }) {
     }
   }
 
+  const handleDeleteCommunity = async (communityId) => {
+    if (!confirm('Delete this community permanently?')) return
+    try {
+      await axios.delete(`/community/delete/${communityId}`)
+      if (selectedCommunity?._id === communityId) {
+        setSelectedCommunity(null)
+        setView('list')
+      }
+      fetchCommunities()
+    } catch {
+      alert('Failed to delete community')
+    }
+  }
+
   // ---------------- SEND MESSAGE ----------------
   const handleSendMessage = async (e) => {
     e.preventDefault()
@@ -167,10 +182,19 @@ function Community({ user }) {
             </p>
           </div>
 
-          {!selectedCommunity.isOwner && (
+          {selectedCommunity.isOwner ? (
+            <button
+              onClick={() => handleDeleteCommunity(selectedCommunity._id)}
+              className="text-gray-600 hover:text-red-500"
+              title="Delete community"
+            >
+              <Trash2 size={22} />
+            </button>
+          ) : (
             <button
               onClick={handleLeaveCommunity}
               className="text-gray-600 hover:text-red-500"
+              title="Leave community"
             >
               <LogOut size={22} />
             </button>
@@ -306,6 +330,15 @@ function Community({ user }) {
                   <MessageCircle size={18} />
                   Open Chat
                 </button>
+                {community.isOwner && (
+                  <button
+                    onClick={() => handleDeleteCommunity(community._id)}
+                    className="mt-2 px-4 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 flex items-center gap-2"
+                  >
+                    <Trash2 size={18} />
+                    Delete
+                  </button>
+                )}
               </div>
             ))}
           </div>

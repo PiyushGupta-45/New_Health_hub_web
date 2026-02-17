@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "./components/Navbar"
+import HealthChatbot from "./components/HealthChatbot"
 
 function Layout({ user, logout }) {
   return (
@@ -11,6 +12,8 @@ function Layout({ user, logout }) {
       <div className="pt-[20px] px-4 md:px-0">
         <Outlet />
       </div>
+
+      <HealthChatbot />
     </div>
   )
 }

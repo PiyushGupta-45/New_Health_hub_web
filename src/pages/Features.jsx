@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { Calculator, Accessibility, Target, Activity, Trophy } from 'lucide-react'
+import { Calculator, Accessibility, Target, Activity, Trophy, Utensils, Sparkles } from 'lucide-react'
 import HealthMetrics from './features/HealthMetrics'
 import PostureAnalysis from './features/PostureAnalysis'
 import PersonalizedGoals from './features/PersonalizedGoals'
 import WorkoutTracker from './features/WorkoutTracker'
+import AIDiet from './features/AIDiet'
+import AIWorkoutPlan from './features/AIWorkoutPlan'
 import Challenges from './Challenges'
 
 function Features({ user }) {
@@ -49,6 +51,22 @@ function Features({ user }) {
       subtitle: 'Join step challenges and compete',
       iconColor: '#6366F1',
       component: Challenges
+    },
+    {
+      id: 'diet-ai',
+      icon: Utensils,
+      title: 'Diet AI',
+      subtitle: 'Create a daily AI diet plan',
+      iconColor: '#16A34A',
+      component: AIDiet
+    },
+    {
+      id: 'workout-ai',
+      icon: Sparkles,
+      title: 'Workout AI',
+      subtitle: 'Create and approve a weekly AI plan',
+      iconColor: '#2563EB',
+      component: AIWorkoutPlan
     }
   ]
 
@@ -56,18 +74,16 @@ function Features({ user }) {
     const FeatureComponent = selectedFeature.component
     return (
       <div className="px-6 py-6">
-        {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => setSelectedFeature(null)}
             className="px-4 py-2 border border-[#4C5BF1] text-[#4C5BF1] rounded-lg hover:bg-[#4C5BF1] hover:text-white transition"
           >
-            ← Back to Features
+            ? Back to Features
           </button>
           <h1 className="text-2xl font-semibold">{selectedFeature.title}</h1>
         </div>
 
-        {/* Render Selected Feature */}
         <FeatureComponent user={user} />
       </div>
     )
@@ -76,15 +92,12 @@ function Features({ user }) {
   return (
     <div className="pt-24 px-6">
       <div className="max-w-6xl mx-auto">
-
-        {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Health Hub Features</h1>
         </div>
 
-        {/* Features Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map(feature => {
+          {features.map((feature) => {
             const Icon = feature.icon
 
             return (
@@ -93,7 +106,6 @@ function Features({ user }) {
                 onClick={() => setSelectedFeature(feature)}
                 className="bg-white shadow rounded-xl p-6 text-center cursor-pointer transition transform hover:-translate-y-1 hover:shadow-lg"
               >
-                {/* Icon Container */}
                 <div
                   className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-4"
                   style={{ background: `${feature.iconColor}20` }}
@@ -101,16 +113,12 @@ function Features({ user }) {
                   <Icon size={36} color={feature.iconColor} />
                 </div>
 
-                {/* Title */}
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-
-                {/* Subtitle */}
                 <p className="text-gray-500">{feature.subtitle}</p>
               </div>
             )
           })}
         </div>
-
       </div>
     </div>
   )
