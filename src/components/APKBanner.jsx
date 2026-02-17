@@ -48,7 +48,7 @@ function APKBanner() {
           title="Show APK banner"
         >
           <Megaphone size={16} />
-          <span className="text-sm font-medium">Show App Banner</span>
+          <span className="text-sm font-medium">Download app</span>
         </button>
       )}
 
