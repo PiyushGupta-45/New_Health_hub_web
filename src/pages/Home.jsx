@@ -75,7 +75,7 @@ function Home({ user }) {
     );
 
   return (
-    <div className="pt-[90px] pb-8">
+    <div className="pb-8">
       <div className="max-w-[1200px] mx-auto px-6">
 
         {/* Header */}

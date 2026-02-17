@@ -9,7 +9,7 @@ function Layout({ user, logout }) {
       <Navbar user={user} logout={logout} />
 
       {/* Page Content */}
-      <div className="pt-[20px] px-4 md:px-0">
+      <div className="pt-[76px] px-4 md:px-0">
         <Outlet />
       </div>
 

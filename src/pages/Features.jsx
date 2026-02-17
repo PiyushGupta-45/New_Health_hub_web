@@ -73,7 +73,7 @@ function Features({ user }) {
   if (selectedFeature) {
     const FeatureComponent = selectedFeature.component
     return (
-      <div className="px-6 py-6">
+      <div className="px-6 pb-6">
         <div className="flex items-center gap-3 mb-6">
           <button
             onClick={() => setSelectedFeature(null)}
@@ -90,7 +90,7 @@ function Features({ user }) {
   }
 
   return (
-    <div className="pt-24 px-6">
+    <div className="px-6">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Health Hub Features</h1>

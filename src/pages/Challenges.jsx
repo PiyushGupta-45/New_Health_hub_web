@@ -98,7 +98,7 @@ function Challenges({ user }) {
 
   if (loading) {
     return (
-      <div className="pt-24 px-6 text-center text-gray-600 text-lg">Loading...</div>
+      <div className="px-6 text-center text-gray-600 text-lg">Loading...</div>
     )
   }
 
@@ -110,7 +110,7 @@ function Challenges({ user }) {
     const myRank = myData ? sorted.indexOf(myData) + 1 : null
 
     return (
-      <div className="pt-24 px-6 pb-10">
+      <div className="px-6 pb-10">
         
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
@@ -214,7 +214,7 @@ function Challenges({ user }) {
     : challenges.filter(c => !myChallenges.some(m => m._id === c._id))
 
   return (
-    <div className="pt-24 px-6 pb-10">
+    <div className="px-6 pb-10">
 
       {/* Header */}
       <div className="flex justify-between items-center mb-6">

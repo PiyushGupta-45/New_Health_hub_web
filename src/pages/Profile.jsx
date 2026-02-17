@@ -133,7 +133,7 @@ function Profile({ user, setUser, logout }) {
     d ? format(new Date(d), 'MMM dd, yyyy') : 'Unknown'
 
   return (
-    <div className="pt-24 pb-10 max-w-4xl mx-auto px-4">
+    <div className="pb-10 max-w-4xl mx-auto px-4">
       
       {/* Page Header */}
       <h1 className="text-3xl font-bold mb-6">Account Settings</h1>

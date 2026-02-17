@@ -164,7 +164,7 @@ function Community({ user }) {
     const uid = user._id || user.id
 
     return (
-      <div className="flex flex-col h-screen pt-20">
+      <div className="flex flex-col min-h-[calc(100vh-76px)]">
 
         {/* Chat Header */}
         <div className="flex items-center gap-4 px-4 py-4 bg-white border-b border-gray-300 shadow-sm">
@@ -271,7 +271,7 @@ function Community({ user }) {
   // ----------------------- COMMUNITY LIST -------------------
   // ---------------------------------------------------------
   return (
-    <div className="pt-25 px-20 pb-16 mx-50">
+    <div className="px-20 pb-16 mx-50">
 
       {/* Header */}
       <div className="flex justify-between items-center mb-6">

@@ -27,7 +27,7 @@ function About() {
   const technologies = ['React', 'Vite', 'Node.js', 'MongoDB', 'AI/ML']
 
   return (
-    <div className="pt-24 pb-10">
+    <div className="pb-10">
 
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-[#1E40AF] to-[#2563EB] text-white text-center px-6 py-12 rounded-3xl mb-10 shadow-lg">
