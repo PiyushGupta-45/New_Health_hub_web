@@ -79,7 +79,7 @@ function Features({ user }) {
             onClick={() => setSelectedFeature(null)}
             className="px-4 py-2 border border-[#4C5BF1] text-[#4C5BF1] rounded-lg hover:bg-[#4C5BF1] hover:text-white transition"
           >
-            ? Back to Features
+            {"<- Back to Features"}
           </button>
           <h1 className="text-2xl font-semibold">{selectedFeature.title}</h1>
         </div>

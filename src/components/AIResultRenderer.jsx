@@ -1,5 +1,16 @@
+﻿const normalizeLine = (line) => {
+  return line
+    .replace(/â€¢/g, '- ')
+    .replace(/â€“/g, '-')
+    .replace(/â€”/g, '--')
+    .replace(/â€™/g, "'")
+    .replace(/â€œ|â€/g, '"')
+    .replace(/^\uFFFD+\s*/g, '- ')
+    .replace(/^[^\w#-]+\s*/g, (m) => (m.trim() ? '- ' : m))
+}
+
 function AIResultRenderer({ rawText }) {
-  const lines = rawText.split('\n')
+  const lines = rawText.split('\n').map(normalizeLine)
 
   return (
     <div className="space-y-2 text-sm leading-6 text-slate-700">
@@ -21,7 +32,7 @@ function AIResultRenderer({ rawText }) {
         if (trimmed.startsWith('- ')) {
           return (
             <p key={index} className="pl-4 relative">
-              <span className="absolute left-0 top-0 text-indigo-600">�</span>
+              <span className="absolute left-0 top-0 text-indigo-600">-</span>
               {trimmed.slice(2)}
             </p>
           )
