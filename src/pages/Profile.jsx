@@ -9,6 +9,7 @@ import { format } from 'date-fns'
 
 function Profile({ user, setUser, logout }) {
   const navigate = useNavigate()
+  const isGuestUser = user?.isGuest
   const [loading, setLoading] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isDeactivating, setIsDeactivating] = useState(false)
@@ -41,6 +42,7 @@ function Profile({ user, setUser, logout }) {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault()
+    if (isGuestUser) return alert('Guest mode is enabled for testing, so profile editing is disabled.')
     if (!formData.name.trim()) return alert('Name cannot be empty')
 
     setLoading(true)
@@ -62,6 +64,7 @@ function Profile({ user, setUser, logout }) {
   }
 
   const handleChangePassword = async () => {
+    if (isGuestUser) return alert('Password changes are disabled in guest mode.')
     if (!passwordData.currentPassword || !passwordData.newPassword)
       return alert('All fields required')
 
@@ -89,6 +92,7 @@ function Profile({ user, setUser, logout }) {
   }
 
   const handleDeactivateAccount = async () => {
+    if (isGuestUser) return alert('Guest mode cannot be deactivated.')
     if (!confirm('Are you sure you want to deactivate your account?')) return
 
     setIsDeactivating(true)
@@ -96,7 +100,7 @@ function Profile({ user, setUser, logout }) {
       const res = await axios.post('/user/deactivate')
       if (res.data.success) {
         logout()
-        navigate('/login')
+        navigate('/home')
       }
     } catch (e) {
       alert('Failed to deactivate')
@@ -105,6 +109,7 @@ function Profile({ user, setUser, logout }) {
   }
 
   const handleDeleteAccount = async () => {
+    if (isGuestUser) return alert('Guest mode cannot be deleted.')
     if (!confirm("Delete account permanently?")) return
     const confirmText = prompt('Type DELETE to confirm:')
     if (confirmText !== 'DELETE') return
@@ -114,7 +119,7 @@ function Profile({ user, setUser, logout }) {
       const res = await axios.delete('/user/delete')
       if (res.data.success) {
         logout()
-        navigate('/login')
+        navigate('/home')
       }
     } catch (e) {
       alert('Failed to delete account')
@@ -125,7 +130,7 @@ function Profile({ user, setUser, logout }) {
   const handleSignOut = () => {
     if (confirm('Sign out?')) {
       logout()
-      navigate('/login')
+      navigate('/home')
     }
   }
 
@@ -148,6 +153,11 @@ function Profile({ user, setUser, logout }) {
         </div>
         <h2 className="text-2xl font-semibold">{user?.name}</h2>
         <p className="text-gray-500">{user?.email}</p>
+        {isGuestUser && (
+          <p className="text-sm text-amber-600 mt-3">
+            Guest access is enabled for stress testing. Account actions are disabled.
+          </p>
+        )}
       </div>
 
       {/* Profile Information */}
@@ -177,14 +187,17 @@ function Profile({ user, setUser, logout }) {
               className="w-full border rounded-lg p-3 bg-gray-100 cursor-not-allowed"
               value={formData.email}
             />
-            <p className="text-gray-500 text-sm mt-1">Email cannot be changed</p>
+            <p className="text-gray-500 text-sm mt-1">
+              {isGuestUser ? 'Guest account details are read-only' : 'Email cannot be changed'}
+            </p>
           </div>
 
           <button
             type="submit"
+            disabled={isGuestUser || loading}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg p-3 flex justify-center items-center gap-2"
           >
-            <Save size={18} /> {loading ? "Saving..." : "Save Changes"}
+            <Save size={18} /> {isGuestUser ? "Guest Mode Enabled" : loading ? "Saving..." : "Save Changes"}
           </button>
         </form>
       </div>
@@ -225,8 +238,10 @@ function Profile({ user, setUser, logout }) {
         <h3 className="text-xl font-bold mb-4">Security</h3>
 
         <div 
-          className="flex justify-between items-center p-4 hover:bg-gray-50 cursor-pointer rounded-lg"
-          onClick={() => setShowPasswordModal(true)}
+          className={`flex justify-between items-center p-4 rounded-lg ${isGuestUser ? 'opacity-60 cursor-not-allowed bg-gray-50' : 'hover:bg-gray-50 cursor-pointer'}`}
+          onClick={() => {
+            if (!isGuestUser) setShowPasswordModal(true)
+          }}
         >
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center">
@@ -247,7 +262,7 @@ function Profile({ user, setUser, logout }) {
 
         {/* Sign Out */}
         <div 
-          className="flex justify-between items-center p-4 hover:bg-gray-50 cursor-pointer rounded-lg"
+          className={`flex justify-between items-center p-4 rounded-lg ${isGuestUser ? 'opacity-60 cursor-not-allowed bg-gray-50' : 'hover:bg-gray-50 cursor-pointer'}`}
           onClick={handleSignOut}
         >
           <div className="flex items-center gap-4">
@@ -266,7 +281,7 @@ function Profile({ user, setUser, logout }) {
 
         {/* Deactivate */}
         <div 
-          className="flex justify-between items-center p-4 hover:bg-gray-50 cursor-pointer rounded-lg"
+          className={`flex justify-between items-center p-4 rounded-lg ${isGuestUser ? 'opacity-60 cursor-not-allowed bg-gray-50' : 'hover:bg-gray-50 cursor-pointer'}`}
           onClick={handleDeactivateAccount}
         >
           <div className="flex items-center gap-4">
@@ -285,7 +300,7 @@ function Profile({ user, setUser, logout }) {
 
         {/* Delete */}
         <div 
-          className="flex justify-between items-center p-4 hover:bg-red-50 cursor-pointer rounded-lg"
+          className={`flex justify-between items-center p-4 rounded-lg ${isGuestUser ? 'opacity-60 cursor-not-allowed bg-red-50' : 'hover:bg-red-50 cursor-pointer'}`}
           onClick={handleDeleteAccount}
         >
           <div className="flex items-center gap-4">
@@ -319,7 +334,9 @@ function Profile({ user, setUser, logout }) {
           <Shield size={22} className="text-indigo-600" />
           <div>
             <p className="text-gray-500 text-sm">Account Type</p>
-            <p className="font-semibold">{user?.googleId ? "Google Account" : "Email Account"}</p>
+            <p className="font-semibold">
+              {isGuestUser ? "Guest Session" : user?.googleId ? "Google Account" : "Email Account"}
+            </p>
           </div>
         </div>
       </div>

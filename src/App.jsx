@@ -15,6 +15,15 @@ import Layout from './Layout'
 import APKBanner from './components/APKBanner'
 import './App.css'
 
+const AUTH_BYPASS_ENABLED = true
+const GUEST_USER = {
+  id: 'guest-user',
+  name: 'Guest User',
+  email: 'guest@healthhub.local',
+  createdAt: new Date().toISOString(),
+  isGuest: true
+}
+
 // API setup
 let API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'
 
@@ -34,7 +43,7 @@ axios.interceptors.request.use(
 )
 
 function App() {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(AUTH_BYPASS_ENABLED ? GUEST_USER : null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -44,11 +53,18 @@ function App() {
       axios.get('/user/profile')
         .then(res => {
           if (res.data.success) setUser(res.data.user)
-          else localStorage.removeItem('token')
+          else {
+            localStorage.removeItem('token')
+            if (AUTH_BYPASS_ENABLED) setUser(GUEST_USER)
+          }
         })
-        .catch(() => localStorage.removeItem('token'))
+        .catch(() => {
+          localStorage.removeItem('token')
+          if (AUTH_BYPASS_ENABLED) setUser(GUEST_USER)
+        })
         .finally(() => setLoading(false))
     } else {
+      if (AUTH_BYPASS_ENABLED) setUser(GUEST_USER)
       setLoading(false)
     }
   }, [])
@@ -60,7 +76,7 @@ function App() {
 
   const logout = () => {
     localStorage.removeItem('token')
-    setUser(null)
+    setUser(AUTH_BYPASS_ENABLED ? GUEST_USER : null)
   }
 
   if (loading) return <div className="loading">Loading...</div>
@@ -75,11 +91,11 @@ function App() {
           {/* Public Routes */}
           <Route
             path="/login"
-            element={user ? <Navigate to="/home" /> : <Login onLogin={login} />}
+            element={AUTH_BYPASS_ENABLED || user ? <Navigate to="/home" /> : <Login onLogin={login} />}
           />
           <Route
             path="/register"
-            element={user ? <Navigate to="/home" /> : <Register onLogin={login} />}
+            element={AUTH_BYPASS_ENABLED || user ? <Navigate to="/home" /> : <Register onLogin={login} />}
           />
 
           {/* Protected Routes using Layout */}
@@ -93,7 +109,7 @@ function App() {
           </Route>
 
           {/* Redirect */}
-          <Route path="/" element={<Navigate to={user ? "/home" : "/login"} />} />
+          <Route path="/" element={<Navigate to="/home" />} />
         </Routes>
 
         <APKBanner />

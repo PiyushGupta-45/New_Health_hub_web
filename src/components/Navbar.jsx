@@ -20,7 +20,7 @@ function Navbar({ user, logout }) {
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to sign out?")) {
       logout();
-      navigate("/login");
+      navigate("/home");
     }
   };
 
@@ -69,7 +69,7 @@ function Navbar({ user, logout }) {
               {getUserInitial()}
             </div>
             <span className="text-sm font-medium text-[var(--text)]">
-              {user?.name?.split(" ")[0] || "User"}
+              {user?.isGuest ? "Guest" : user?.name?.split(" ")[0] || "User"}
             </span>
           </Link>
 
