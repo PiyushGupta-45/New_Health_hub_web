@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import { Analytics } from '@vercel/analytics/react'
 import axios from 'axios'
 
 import Login from './pages/Login'
@@ -98,6 +99,7 @@ function App() {
 
         <APKBanner />
       </Router>
+      <Analytics />
     </GoogleOAuthProvider>
   )
 }
